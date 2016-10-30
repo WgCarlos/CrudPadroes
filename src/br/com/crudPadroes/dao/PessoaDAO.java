@@ -7,7 +7,7 @@ import br.com.crudPadroes.model.Pessoa;
 public interface PessoaDAO {
 	
 	public void salvar (Pessoa pessoa);
-	public void remover(int id);
+	public void remover(Pessoa p);
 	public List<Pessoa> listar();
 	public Pessoa buscar (int id);
 	public void alterar(Pessoa pessoa);

@@ -44,15 +44,16 @@ public class PessoaDAOImpl implements PessoaDAO {
 	}
 
 	@Override
-	public void remover(int id) {
+	public void remover(Pessoa p) {
 		PreparedStatement ps = null;
 		
 		try {
-			String SQL = "DELETE FROM funcionarios WHERE id= ?";
+			String SQL = "DELETE FROM funcionarios WHERE idfuncionarios = ?";
 			ps = connection.prepareStatement(SQL);
-			ps.setInt(1, id);
+			ps.setInt(1, p.getId());
 			ps.executeUpdate();
 			ps.close();
+			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +96,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 		
 		try {
 			Pessoa pessoa = new Pessoa();
-			String SQL = "SELECT * FROM funcionarios WHERE id = ?";
+			String SQL = "SELECT * FROM funcionarios WHERE idfuncionarios = ?";
 			ps = connection.prepareStatement(SQL);
 			rs = ps.executeQuery();
 			
@@ -124,7 +125,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 		
 		
 		try {
-			String SQL = "UPDATE funcionarios SET nome=?, endereco=?, telefone=?, email= ? WHERE id=?";
+			String SQL = "UPDATE funcionarios SET nome=?, endereco=?, telefone=?, email= ? WHERE idfuncionarios = ?";
 			ps = connection.prepareStatement(SQL);
 			ps.setString(1, pessoa.getNome());
 			ps.setString(2, pessoa.getEndereco());

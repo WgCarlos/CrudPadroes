@@ -29,6 +29,7 @@ public class Cadastro extends JFrame {
 	private JTextField textTelefone;
 	private JTextField textEmail;
 	private JTable table;
+	private JButton btnListar;
 
 	/**
 	 * Launch the application.
@@ -64,6 +65,7 @@ public class Cadastro extends JFrame {
 				textEnd.setText("");
 				textTelefone.setText("");
 				textEmail.setText("");
+				CarregarTabela();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -72,6 +74,7 @@ public class Cadastro extends JFrame {
 	
 	public void CarregarTabela(){
 		DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+		modelo.setNumRows(0);
 		try {
 			PessoaDAOImpl dao = new PessoaDAOImpl();
 			for(Pessoa p: dao.listar()){
@@ -85,6 +88,47 @@ public class Cadastro extends JFrame {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void AtualizarFuncionario(){
+		
+		if(table.getSelectedRow() != -1){
+			Pessoa p = new Pessoa();
+			
+			try {
+				PessoaDAOImpl dao = new PessoaDAOImpl();
+				
+				p.setNome(textNome.getText());
+				p.setEndereco(textEnd.getText());
+				p.setTelefone(textTelefone.getText());
+				p.setEmail(textEmail.getText());
+				p.setId((int)table.getValueAt(table.getSelectedRow(), 0));
+				dao.alterar(p);
+				
+				
+				textNome.setText("");
+				textEnd.setText("");
+				textTelefone.setText("");
+				textEmail.setText("");
+				
+				CarregarTabela();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	public void RemoverFuncionario(){
+		if(table.getSelectedRow() != -1){
+			Pessoa p = new Pessoa();
+			try {
+				PessoaDAOImpl dao = new PessoaDAOImpl();
+				
+				p.setId((int)table.getValueAt(table.getSelectedRow(), 0));
+				dao.remover(p);
+				CarregarTabela();
+			} catch (Exception e) {
+			}
 		}
 	}
 	/**
@@ -144,11 +188,20 @@ public class Cadastro extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				SalvarFuncionario();
-				CarregarTabela();
 			}
 		});
 		btnCadastrar.setBounds(33, 408, 103, 23);
 		contentPane.add(btnCadastrar);
+		
+		btnListar = new JButton("Listar");
+		btnListar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CarregarTabela();
+			}
+		});
+		btnListar.setBounds(169, 408, 89, 23);
+		contentPane.add(btnListar);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
@@ -160,6 +213,27 @@ public class Cadastro extends JFrame {
 		));
 		table.setBounds(59, 218, 353, 158);
 		contentPane.add(table);
-		CarregarTabela();
+		
+		JButton btnRemover = new JButton("Remover");
+		btnRemover.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				RemoverFuncionario();
+			}
+		});
+		btnRemover.setBounds(287, 408, 89, 23);
+		contentPane.add(btnRemover);
+		
+		JButton btnAletrar = new JButton("Aletrar");
+		btnAletrar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				AtualizarFuncionario();
+			}
+		});
+		btnAletrar.setBounds(381, 408, 89, 23);
+		contentPane.add(btnAletrar);
+		
+		
 	}
 }
