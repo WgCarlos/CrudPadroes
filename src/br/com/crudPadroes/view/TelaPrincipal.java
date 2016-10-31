@@ -132,6 +132,13 @@ public class TelaPrincipal extends JFrame {
 			}
 		}
 	}
+	
+	public void Limpar(){
+		textNome.setText("");
+		textEnd.setText("");
+		textTelefone.setText("");
+		textEmail.setText("");
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -252,6 +259,17 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnAletrar.setBounds(263, 418, 45, 45);
 		contentPane.add(btnAletrar);
+		
+		JButton btnLimpar = new JButton("");
+		btnLimpar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/clear.png")));
+		btnLimpar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Limpar();
+			}
+		});
+		btnLimpar.setBounds(423, 22, 40, 40);
+		contentPane.add(btnLimpar);
 		
 		
 	}
