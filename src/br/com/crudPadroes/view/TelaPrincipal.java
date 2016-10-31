@@ -20,8 +20,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 
-public class Cadastro extends JFrame {
+public class TelaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textNome;
@@ -38,7 +39,7 @@ public class Cadastro extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Cadastro frame = new Cadastro();
+					TelaPrincipal frame = new TelaPrincipal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -134,8 +135,9 @@ public class Cadastro extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Cadastro() {
-		setTitle("Cadastro de usu\u00E1rio");
+	public TelaPrincipal() {
+		setResizable(false);
+		setTitle("Gerenciamento de funcion\u00E1rio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 496, 548);
 		contentPane = new JPanel();
@@ -144,66 +146,80 @@ public class Cadastro extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblCadastrarFuncionario = new JLabel("Cadastrar Funcionario");
-		lblCadastrarFuncionario.setBounds(126, 11, 131, 14);
+		lblCadastrarFuncionario.setBounds(192, 11, 131, 14);
 		contentPane.add(lblCadastrarFuncionario);
 		
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(33, 39, 46, 14);
+		lblNome.setBounds(98, 57, 46, 14);
 		contentPane.add(lblNome);
 		
 		JLabel lblEndereo = new JLabel("Endere\u00E7o");
-		lblEndereo.setBounds(33, 73, 71, 14);
+		lblEndereo.setBounds(98, 91, 71, 14);
 		contentPane.add(lblEndereo);
 		
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(33, 101, 235, 14);
+		lblTelefone.setBounds(98, 119, 235, 14);
 		contentPane.add(lblTelefone);
 		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(33, 132, 46, 14);
+		lblEmail.setBounds(98, 150, 46, 14);
 		contentPane.add(lblEmail);
 		
 		textNome = new JTextField();
-		textNome.setBounds(114, 36, 202, 20);
+		textNome.setBounds(179, 54, 202, 20);
 		contentPane.add(textNome);
 		textNome.setColumns(10);
 		
 		textEnd = new JTextField();
-		textEnd.setBounds(114, 67, 202, 20);
+		textEnd.setBounds(179, 85, 202, 20);
 		contentPane.add(textEnd);
 		textEnd.setColumns(10);
 		
 		textTelefone = new JTextField();
-		textTelefone.setBounds(115, 98, 142, 20);
+		textTelefone.setToolTipText("");
+		textTelefone.setBounds(181, 116, 142, 20);
 		contentPane.add(textTelefone);
 		textTelefone.setColumns(10);
 		
 		textEmail = new JTextField();
-		textEmail.setBounds(114, 126, 202, 20);
+		textEmail.setBounds(179, 144, 202, 20);
 		contentPane.add(textEmail);
 		textEmail.setColumns(10);
 		
-		JButton btnCadastrar = new JButton("Cadastrar");
+		JButton btnCadastrar = new JButton("");
+		btnCadastrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/save.png")));
 		btnCadastrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				SalvarFuncionario();
 			}
 		});
-		btnCadastrar.setBounds(33, 408, 103, 23);
+		btnCadastrar.setBounds(43, 423, 40, 40);
 		contentPane.add(btnCadastrar);
 		
-		btnListar = new JButton("Listar");
+		btnListar = new JButton("");
+		btnListar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/list.png")));
 		btnListar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				CarregarTabela();
 			}
 		});
-		btnListar.setBounds(169, 408, 89, 23);
+		btnListar.setBounds(142, 423, 40, 40);
 		contentPane.add(btnListar);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int IndiceLinha = table.getSelectedRow();
+				textNome.setText(table.getValueAt(IndiceLinha, 1).toString());
+				textEnd.setText(table.getValueAt(IndiceLinha, 2).toString());
+				textTelefone.setText(table.getValueAt(IndiceLinha, 3).toString());
+				textEmail.setText(table.getValueAt(IndiceLinha, 4).toString());
+						
+			}
+		});
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -211,27 +227,30 @@ public class Cadastro extends JFrame {
 				"Id", "Nome", "Endere\u00E7o", "Telefone", "Email"
 			}
 		));
-		table.setBounds(59, 218, 353, 158);
+		table.setBounds(33, 218, 415, 158);
 		contentPane.add(table);
 		
-		JButton btnRemover = new JButton("Remover");
+		JButton btnRemover = new JButton("");
+		btnRemover.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/remove.png")));
+		btnRemover.setSelectedIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/remove.png")));
 		btnRemover.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				RemoverFuncionario();
 			}
 		});
-		btnRemover.setBounds(287, 408, 89, 23);
+		btnRemover.setBounds(385, 423, 40, 40);
 		contentPane.add(btnRemover);
 		
-		JButton btnAletrar = new JButton("Aletrar");
+		JButton btnAletrar = new JButton("");
+		btnAletrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/edit1.png")));
 		btnAletrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				AtualizarFuncionario();
 			}
 		});
-		btnAletrar.setBounds(381, 408, 89, 23);
+		btnAletrar.setBounds(263, 418, 45, 45);
 		contentPane.add(btnAletrar);
 		
 		
