@@ -106,6 +106,7 @@ public class TelaPrincipal extends JFrame {
 				pessoa.setEmail(textEmail.getText());
 				pessoa.setId((int)table.getValueAt(table.getSelectedRow(), 0));
 				dao.alterar(pessoa);
+				JOptionPane.showMessageDialog(null, "Funcionario alterado com sucesso");
 				
 				textNome.setText("");
 				textEnd.setText("");
@@ -123,7 +124,11 @@ public class TelaPrincipal extends JFrame {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
 				
 				pessoa.setId((int)table.getValueAt(table.getSelectedRow(), 0));
-				dao.remover(pessoa);
+				int op = (JOptionPane.showConfirmDialog(null, "Deseja excluir funcionario?"));
+				if (op== JOptionPane.YES_OPTION){
+					dao.remover(pessoa);
+				}
+				
 				
 				textNome.setText("");
 				textEnd.setText("");
@@ -195,7 +200,7 @@ public class TelaPrincipal extends JFrame {
 		textEmail.setColumns(10);
 		
 		JButton btnCadastrar = new JButton("");
-		btnCadastrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/save.png")));
+		btnCadastrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/save.png")));
 		btnCadastrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -206,7 +211,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(btnCadastrar);
 		
 		btnListar = new JButton("");
-		btnListar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/list.png")));
+		btnListar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/list.png")));
 		btnListar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -239,8 +244,8 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(table);
 		
 		JButton btnRemover = new JButton("");
-		btnRemover.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/remove.png")));
-		btnRemover.setSelectedIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/remove.png")));
+		btnRemover.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/remove.png")));
+		btnRemover.setSelectedIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/remove.png")));
 		btnRemover.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -251,7 +256,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(btnRemover);
 		
 		JButton btnAletrar = new JButton("");
-		btnAletrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/edit1.png")));
+		btnAletrar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/edit1.png")));
 		btnAletrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -262,7 +267,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(btnAletrar);
 		
 		JButton btnLimpar = new JButton("");
-		btnLimpar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/Icons/clear.png")));
+		btnLimpar.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/crudPadroes/icons/clear.png")));
 		btnLimpar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
