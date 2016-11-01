@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFormattedTextField;
 
 public class TelaPrincipal extends JFrame {
 
@@ -49,18 +50,18 @@ public class TelaPrincipal extends JFrame {
 	}
 	
 	public void SalvarFuncionario(){
-		Pessoa pessoas = new Pessoa();
-		pessoas.setNome(textNome.getText());
-		pessoas.setEndereco(textEnd.getText());
-		pessoas.setTelefone(textTelefone.getText());
-		pessoas.setEmail(textEmail.getText());
+		Pessoa pessoa = new Pessoa();
+		pessoa.setNome(textNome.getText());
+		pessoa.setEndereco(textEnd.getText());
+		pessoa.setTelefone(textTelefone.getText());
+		pessoa.setEmail(textEmail.getText());
 		
 		if ((textNome.getText().isEmpty()) || (textEnd.getText().isEmpty()) || (textTelefone.getText().isEmpty())){
 			JOptionPane.showMessageDialog(null, "Campos Obrigatórios!");
 		}else {
 			try {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
-				dao.salvar(pessoas);
+				dao.salvar(pessoa);
 				JOptionPane.showMessageDialog(null, "Funcionario " + textNome.getText() + " inserido com sucesso");
 				textNome.setText("");
 				textEnd.setText("");
@@ -78,13 +79,13 @@ public class TelaPrincipal extends JFrame {
 		modelo.setNumRows(0);
 		try {
 			PessoaDAOImpl dao = new PessoaDAOImpl();
-			for(Pessoa p: dao.listar()){
+			for(Pessoa pessoa: dao.listar()){
 				modelo.addRow(new Object[]{
-						p.getId(),
-						p.getNome(),
-						p.getEndereco(),
-						p.getTelefone(),
-						p.getEmail()
+						pessoa.getId(),
+						pessoa.getNome(),
+						pessoa.getEndereco(),
+						pessoa.getTelefone(),
+						pessoa.getEmail()
 				});
 			}
 		} catch (Exception e) {
@@ -94,19 +95,17 @@ public class TelaPrincipal extends JFrame {
 	
 	public void AtualizarFuncionario(){
 		
-		if(table.getSelectedRow() != -1){
-			Pessoa p = new Pessoa();
+			Pessoa pessoa = new Pessoa();
 			
 			try {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
 				
-				p.setNome(textNome.getText());
-				p.setEndereco(textEnd.getText());
-				p.setTelefone(textTelefone.getText());
-				p.setEmail(textEmail.getText());
-				p.setId((int)table.getValueAt(table.getSelectedRow(), 0));
-				dao.alterar(p);
-				
+				pessoa.setNome(textNome.getText());
+				pessoa.setEndereco(textEnd.getText());
+				pessoa.setTelefone(textTelefone.getText());
+				pessoa.setEmail(textEmail.getText());
+				pessoa.setId((int)table.getValueAt(table.getSelectedRow(), 0));
+				dao.alterar(pessoa);
 				
 				textNome.setText("");
 				textEnd.setText("");
@@ -116,21 +115,23 @@ public class TelaPrincipal extends JFrame {
 				CarregarTabela();
 			} catch (Exception e) {
 			}
-		}
 	}
 	
 	public void RemoverFuncionario(){
-		if(table.getSelectedRow() != -1){
-			Pessoa p = new Pessoa();
+			Pessoa pessoa = new Pessoa();
 			try {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
 				
-				p.setId((int)table.getValueAt(table.getSelectedRow(), 0));
-				dao.remover(p);
+				pessoa.setId((int)table.getValueAt(table.getSelectedRow(), 0));
+				dao.remover(pessoa);
+				
+				textNome.setText("");
+				textEnd.setText("");
+				textTelefone.setText("");
+				textEmail.setText("");
 				CarregarTabela();
 			} catch (Exception e) {
 			}
-		}
 	}
 	
 	public void Limpar(){
