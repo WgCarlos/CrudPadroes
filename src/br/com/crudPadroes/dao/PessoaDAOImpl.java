@@ -10,25 +10,27 @@ import java.util.List;
 import br.com.crudPadroes.model.Pessoa;
 import br.com.crudPadroes.util.ConnectionFactory;
 
-public class PessoaDAOImpl implements PessoaDAO {
+public class PessoaDAOImpl extends ConnectionFactory implements PessoaDAO {
+	
+private static final String TABLE = "funcionarios";
+private static final String COLUMNS = "(nome, endereco, telefone, email)";
 
-	Connection connection;
-	public PessoaDAOImpl() throws Exception{
-		connection = ConnectionFactory.getConnection();
-		
-	}
-	
-	
 	
 	@Override
 	public void salvar(Pessoa pessoa) {
+		Connection con = null;
 		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
 		
-		
+		sql.append("INSERT INTO ");
+		sql.append(TABLE);
+		sql.append(" ");
+		sql.append(COLUMNS);
+		sql.append(" values (?,?,?,?) ");
 		
 		try {
-			String SQL = "INSERT INTO funcionarios (nome, endereco, telefone, email) VALUES" + "(?,?,?,?)";
-			ps = connection.prepareStatement(SQL);
+			con = getConnection();
+			ps = con.prepareStatement(sql.toString());
 			
 			ps.setString(1, pessoa.getNome());
 			ps.setString(2, pessoa.getEndereco());
@@ -37,7 +39,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 			
 			ps.executeUpdate();
 			ps.close();
-			connection.close();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -45,15 +47,21 @@ public class PessoaDAOImpl implements PessoaDAO {
 
 	@Override
 	public void remover(Pessoa p) {
+		Connection con = null;
 		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("DELETE FROM ");
+		sql.append(TABLE);
+		sql.append(" WHERE idfuncionarios = ?");
 		
 		try {
-			String SQL = "DELETE FROM funcionarios WHERE idfuncionarios = ?";
-			ps = connection.prepareStatement(SQL);
+			con = getConnection();
+			ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, p.getId());
 			ps.executeUpdate();
 			ps.close();
-			connection.close();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -61,12 +69,19 @@ public class PessoaDAOImpl implements PessoaDAO {
 
 	@Override
 	public List<Pessoa> listar() {
+		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
+		
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		
+		sql.append("SELECT * FROM ");
+		sql.append(TABLE);
+		
 		try {
-			String SQL = "SELECT * FROM funcionarios";
-			ps = connection.prepareStatement(SQL);
+			con = getConnection();
+			ps = con.prepareStatement(sql.toString());
 			rs = ps.executeQuery();
 			while (rs.next()){
 				Pessoa pessoa = new Pessoa();
@@ -79,7 +94,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 			}
 			ps.close();
 			rs.close();
-			connection.close();
+			con.close();
 			return pessoas;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -90,14 +105,19 @@ public class PessoaDAOImpl implements PessoaDAO {
 
 	@Override
 	public Pessoa buscar(int id) {
+		Connection con = null;		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		StringBuilder sql = new StringBuilder();
 		
-		
+		sql.append("SELECT * FROM ");
+		sql.append(TABLE);
+		sql.append(" ");
+		sql.append("WHERE idfuncionarios = ?");
 		try {
+			con = getConnection();
 			Pessoa pessoa = new Pessoa();
-			String SQL = "SELECT * FROM funcionarios WHERE idfuncionarios = ?";
-			ps = connection.prepareStatement(SQL);
+			ps = con.prepareStatement(sql.toString());
 			rs = ps.executeQuery();
 			
 			rs.next();
@@ -108,7 +128,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 			
 			ps.close();
 			rs.close();
-			connection.close();
+			con.close();
 			return pessoa;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,12 +141,19 @@ public class PessoaDAOImpl implements PessoaDAO {
 
 	@Override
 	public void alterar(Pessoa pessoa) {
+		Connection con = null;
 		PreparedStatement ps = null;
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("UPDATE ");
+		sql.append(TABLE);
+		sql.append(" ");
+		sql.append("SET nome=?, endereco=?, telefone=?, email=? where idfuncionarios=?");
 		
 		
 		try {
-			String SQL = "UPDATE funcionarios SET nome=?, endereco=?, telefone=?, email= ? WHERE idfuncionarios = ?";
-			ps = connection.prepareStatement(SQL);
+			con = getConnection();
+			ps = con.prepareStatement(sql.toString());
 			ps.setString(1, pessoa.getNome());
 			ps.setString(2, pessoa.getEndereco());
 			ps.setString(3, pessoa.getTelefone());
@@ -134,7 +161,7 @@ public class PessoaDAOImpl implements PessoaDAO {
 			ps.setInt(5, pessoa.getId());
 			ps.executeUpdate();
 			ps.close();
-			connection.close();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
