@@ -2,10 +2,18 @@ package br.com.crudPadroes.model;
 
 public class Pessoa {
 	
+	private int id;
 	private String nome;
+	private String cpf;
+	
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 	private String endereco;
 	private String telefone;
-	private int id;
 	private String email;
 	
 	public int getId() {

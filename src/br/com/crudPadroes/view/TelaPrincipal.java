@@ -32,6 +32,7 @@ public class TelaPrincipal extends JFrame {
 	private JTextField textEmail;
 	private JTable table;
 	private JButton btnListar;
+	private JTextField textCpf;
 
 	/**
 	 * Launch the application.
@@ -52,21 +53,20 @@ public class TelaPrincipal extends JFrame {
 	public void SalvarFuncionario(){
 		Pessoa pessoa = new Pessoa();
 		pessoa.setNome(textNome.getText());
+		pessoa.setCpf(textCpf.getText());
 		pessoa.setEndereco(textEnd.getText());
 		pessoa.setTelefone(textTelefone.getText());
 		pessoa.setEmail(textEmail.getText());
 		
-		if ((textNome.getText().isEmpty()) || (textEnd.getText().isEmpty()) || (textTelefone.getText().isEmpty())){
+		if ((textNome.getText().isEmpty()) || (textEnd.getText().isEmpty()) || (textTelefone.getText().isEmpty()) || (textCpf.getText().isEmpty())){
 			JOptionPane.showMessageDialog(null, "Campos Obrigatórios!");
 		}else {
 			try {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
 				dao.salvar(pessoa);
 				JOptionPane.showMessageDialog(null, "Funcionario " + textNome.getText() + " inserido com sucesso");
-				textNome.setText("");
-				textEnd.setText("");
-				textTelefone.setText("");
-				textEmail.setText("");
+				
+				Limpar();
 				CarregarTabela();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -83,6 +83,7 @@ public class TelaPrincipal extends JFrame {
 				modelo.addRow(new Object[]{
 						pessoa.getId(),
 						pessoa.getNome(),
+						pessoa.getCpf(),
 						pessoa.getEndereco(),
 						pessoa.getTelefone(),
 						pessoa.getEmail()
@@ -101,6 +102,7 @@ public class TelaPrincipal extends JFrame {
 				PessoaDAOImpl dao = new PessoaDAOImpl();
 				
 				pessoa.setNome(textNome.getText());
+				pessoa.setCpf(textCpf.getText());
 				pessoa.setEndereco(textEnd.getText());
 				pessoa.setTelefone(textTelefone.getText());
 				pessoa.setEmail(textEmail.getText());
@@ -108,11 +110,7 @@ public class TelaPrincipal extends JFrame {
 				dao.alterar(pessoa);
 				JOptionPane.showMessageDialog(null, "Funcionario alterado com sucesso");
 				
-				textNome.setText("");
-				textEnd.setText("");
-				textTelefone.setText("");
-				textEmail.setText("");
-				
+				Limpar();
 				CarregarTabela();
 			} catch (Exception e) {
 			}
@@ -129,11 +127,7 @@ public class TelaPrincipal extends JFrame {
 					dao.remover(pessoa);
 				}
 				
-				
-				textNome.setText("");
-				textEnd.setText("");
-				textTelefone.setText("");
-				textEmail.setText("");
+				Limpar();
 				CarregarTabela();
 			} catch (Exception e) {
 			}
@@ -141,6 +135,7 @@ public class TelaPrincipal extends JFrame {
 	
 	public void Limpar(){
 		textNome.setText("");
+		textCpf.setText("");
 		textEnd.setText("");
 		textTelefone.setText("");
 		textEmail.setText("");
@@ -167,15 +162,15 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(lblNome);
 		
 		JLabel lblEndereo = new JLabel("Endere\u00E7o");
-		lblEndereo.setBounds(98, 91, 71, 14);
+		lblEndereo.setBounds(98, 122, 71, 14);
 		contentPane.add(lblEndereo);
 		
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(98, 119, 235, 14);
+		lblTelefone.setBounds(98, 149, 46, 14);
 		contentPane.add(lblTelefone);
 		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(98, 150, 46, 14);
+		lblEmail.setBounds(98, 180, 46, 14);
 		contentPane.add(lblEmail);
 		
 		textNome = new JTextField();
@@ -184,18 +179,18 @@ public class TelaPrincipal extends JFrame {
 		textNome.setColumns(10);
 		
 		textEnd = new JTextField();
-		textEnd.setBounds(179, 85, 202, 20);
+		textEnd.setBounds(179, 116, 202, 20);
 		contentPane.add(textEnd);
 		textEnd.setColumns(10);
 		
 		textTelefone = new JTextField();
 		textTelefone.setToolTipText("");
-		textTelefone.setBounds(181, 116, 142, 20);
+		textTelefone.setBounds(179, 146, 202, 20);
 		contentPane.add(textTelefone);
 		textTelefone.setColumns(10);
 		
 		textEmail = new JTextField();
-		textEmail.setBounds(179, 144, 202, 20);
+		textEmail.setBounds(179, 174, 202, 20);
 		contentPane.add(textEmail);
 		textEmail.setColumns(10);
 		
@@ -227,9 +222,10 @@ public class TelaPrincipal extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				int IndiceLinha = table.getSelectedRow();
 				textNome.setText(table.getValueAt(IndiceLinha, 1).toString());
-				textEnd.setText(table.getValueAt(IndiceLinha, 2).toString());
-				textTelefone.setText(table.getValueAt(IndiceLinha, 3).toString());
-				textEmail.setText(table.getValueAt(IndiceLinha, 4).toString());
+				textCpf.setText(table.getValueAt(IndiceLinha, 2).toString());
+				textEnd.setText(table.getValueAt(IndiceLinha, 3).toString());
+				textTelefone.setText(table.getValueAt(IndiceLinha, 4).toString());
+				textEmail.setText(table.getValueAt(IndiceLinha, 5).toString());
 						
 			}
 		});
@@ -237,10 +233,10 @@ public class TelaPrincipal extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Id", "Nome", "Endere\u00E7o", "Telefone", "Email"
+				"Id", "Nome", "Cpf", "Endere\u00E7o", "Telefone", "Email"
 			}
 		));
-		table.setBounds(33, 218, 415, 158);
+		table.setBounds(10, 218, 470, 158);
 		contentPane.add(table);
 		
 		JButton btnRemover = new JButton("");
@@ -276,6 +272,15 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnLimpar.setBounds(423, 22, 40, 40);
 		contentPane.add(btnLimpar);
+		
+		JLabel lblNewLabel = new JLabel("Cpf");
+		lblNewLabel.setBounds(98, 88, 46, 14);
+		contentPane.add(lblNewLabel);
+		
+		textCpf = new JTextField();
+		textCpf.setBounds(179, 85, 202, 20);
+		contentPane.add(textCpf);
+		textCpf.setColumns(10);
 		
 		
 	}

@@ -13,7 +13,7 @@ import br.com.crudPadroes.util.ConnectionFactory;
 public class PessoaDAOImpl extends ConnectionFactory implements PessoaDAO {
 	
 private static final String TABLE = "funcionarios";
-private static final String COLUMNS = "(nome, endereco, telefone, email)";
+private static final String COLUMNS = "(nome, cpf, endereco, telefone, email)";
 
 	
 	@Override
@@ -26,16 +26,17 @@ private static final String COLUMNS = "(nome, endereco, telefone, email)";
 		sql.append(TABLE);
 		sql.append(" ");
 		sql.append(COLUMNS);
-		sql.append(" values (?,?,?,?) ");
+		sql.append(" values (?,?,?,?,?) ");
 		
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sql.toString());
 			
 			ps.setString(1, pessoa.getNome());
-			ps.setString(2, pessoa.getEndereco());
-			ps.setString(3, pessoa.getTelefone());
-			ps.setString(4, pessoa.getEmail());
+			ps.setString(2, pessoa.getCpf());
+			ps.setString(3, pessoa.getEndereco());
+			ps.setString(4, pessoa.getTelefone());
+			ps.setString(5, pessoa.getEmail());
 			
 			ps.executeUpdate();
 			ps.close();
@@ -87,6 +88,7 @@ private static final String COLUMNS = "(nome, endereco, telefone, email)";
 				Pessoa pessoa = new Pessoa();
 				pessoa.setId(rs.getInt("idfuncionarios"));
 				pessoa.setNome(rs.getString("nome"));
+				pessoa.setCpf(rs.getString("cpf"));
 				pessoa.setEndereco(rs.getString("endereco"));
 				pessoa.setTelefone(rs.getString("telefone"));
 				pessoa.setEmail(rs.getString("email"));
@@ -148,17 +150,18 @@ private static final String COLUMNS = "(nome, endereco, telefone, email)";
 		sql.append("UPDATE ");
 		sql.append(TABLE);
 		sql.append(" ");
-		sql.append("SET nome=?, endereco=?, telefone=?, email=? where idfuncionarios=?");
+		sql.append("SET nome=?, cpf=?, endereco=?, telefone=?, email=? where idfuncionarios=?");
 		
 		
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sql.toString());
 			ps.setString(1, pessoa.getNome());
-			ps.setString(2, pessoa.getEndereco());
-			ps.setString(3, pessoa.getTelefone());
-			ps.setString(4, pessoa.getEmail());
-			ps.setInt(5, pessoa.getId());
+			ps.setString(2, pessoa.getCpf());
+			ps.setString(3, pessoa.getEndereco());
+			ps.setString(4, pessoa.getTelefone());
+			ps.setString(5, pessoa.getEmail());
+			ps.setInt(6, pessoa.getId());
 			ps.executeUpdate();
 			ps.close();
 			con.close();
