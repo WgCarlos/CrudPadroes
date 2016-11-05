@@ -166,7 +166,7 @@ public class TelaPrincipal extends JFrame {
 		contentPane.add(lblEndereo);
 		
 		JLabel lblTelefone = new JLabel("Telefone");
-		lblTelefone.setBounds(98, 149, 46, 14);
+		lblTelefone.setBounds(98, 149, 71, 14);
 		contentPane.add(lblTelefone);
 		
 		JLabel lblEmail = new JLabel("Email");

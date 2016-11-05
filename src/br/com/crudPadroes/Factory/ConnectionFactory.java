@@ -1,4 +1,4 @@
-package br.com.crudPadroes.util;
+package br.com.crudPadroes.Factory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

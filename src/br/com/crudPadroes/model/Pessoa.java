@@ -5,6 +5,9 @@ public class Pessoa {
 	private int id;
 	private String nome;
 	private String cpf;
+	private String endereco;
+	private String telefone;
+	private String email;
 	
 	public String getCpf() {
 		return cpf;
@@ -12,9 +15,6 @@ public class Pessoa {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	private String endereco;
-	private String telefone;
-	private String email;
 	
 	public int getId() {
 		return id;

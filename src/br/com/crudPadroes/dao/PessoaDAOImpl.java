@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.crudPadroes.Factory.ConnectionFactory;
 import br.com.crudPadroes.model.Pessoa;
-import br.com.crudPadroes.util.ConnectionFactory;
 
 public class PessoaDAOImpl extends ConnectionFactory implements PessoaDAO {
 	
@@ -26,7 +26,7 @@ private static final String COLUMNS = "(nome, cpf, endereco, telefone, email)";
 		sql.append(TABLE);
 		sql.append(" ");
 		sql.append(COLUMNS);
-		sql.append(" values (?,?,?,?,?) ");
+		sql.append(" VALUES (?,?,?,?,?) ");
 		
 		try {
 			con = getConnection();
@@ -54,7 +54,8 @@ private static final String COLUMNS = "(nome, cpf, endereco, telefone, email)";
 		
 		sql.append("DELETE FROM ");
 		sql.append(TABLE);
-		sql.append(" WHERE idfuncionarios = ?");
+		sql.append(" ");
+		sql.append("WHERE idfuncionarios = ?");
 		
 		try {
 			con = getConnection();
